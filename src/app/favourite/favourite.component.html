@@ -1,0 +1,20 @@
+<div class="book" *ngFor="let book of favouriteBooks">
+  <h4 class="title">
+    <a href="{{ book['infoLink'] }}" target="_blank">{{ book['title'] }}</a>
+  </h4>
+  <p class="categories"><i>Категории: {{ book['categories'] }}</i></p>
+  <p class="authors"><i>Авторы: {{ book['authors'] }}</i></p>
+  <a
+    href="{{ book['previewLink'] }}"
+    target="_blank"
+    class="button-read"
+  >
+    Читать
+  </a>
+  <button
+    class="button-favourite"
+    (click)="deleteFromFavourite(book)"
+  >
+    Убрать из избранных
+  </button>
+</div>

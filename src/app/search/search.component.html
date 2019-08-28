@@ -1,0 +1,56 @@
+<div>
+  <input
+    type="text"
+    [(ngModel)]="searchString"
+    (keyup.enter)="search()"
+    class="search"
+  >
+  <button routerLink="/favourite">Избранные: {{ LocalStorage.length }}</button>
+</div>
+<hr>
+<div class="book" *ngFor="let bookItem of booksList">
+  <img
+    *ngIf="bookItem['volumeInfo']['imageLinks']; else elseImage"
+    src="{{ bookItem['volumeInfo']['imageLinks']['thumbnail'] || bookItem['volumeInfo']['imageLinks']['smallThumbnail'] }}"
+    alt="{{ bookItem['volumeInfo']['title'] }}"
+    title="{{ bookItem['volumeInfo']['title'] }}"
+    class="image"
+  >
+  <ng-template #elseImage>
+    <div
+      class="image"
+      title="{{ bookItem['volumeInfo']['title'] }}"
+      style="line-height: 200px; font-size: 13px; text-align: center"
+    >
+      Nothing to show
+    </div>
+  </ng-template>
+  <h4 class="title">
+    <a href="{{ bookItem['volumeInfo']['infoLink'] }}" target="_blank">{{ bookItem['volumeInfo']['title'] }}</a>
+  </h4>
+  <p
+    *ngIf="bookItem['searchInfo'] && bookItem['searchInfo']['textSnippet']; else elseSnippet"
+    class="textSnippet"
+  >
+    {{ bookItem['searchInfo']['textSnippet'] }}
+  </p><ng-template #elseSnippet></ng-template>
+  <p class="categories"><i>Категории: {{ bookItem['volumeInfo']['categories'] }}</i></p>
+  <p class="authors"><i>Авторы: {{ bookItem['volumeInfo']['authors'] }}</i></p>
+  <a
+    href="{{ bookItem['volumeInfo']['previewLink'] }}"
+    target="_blank"
+    class="button-read"
+  >
+    Читать
+  </a>
+  <button
+    class="button-favourite"
+    (click)="addToFavourite(bookItem)"
+  >
+    <i
+      class="fa fa-star"
+      [ngClass]="{'in-favourite': json.parse(LocalStorage.getItem(bookItem['id']))}"
+    ></i>
+    В избранное
+  </button>
+</div>
